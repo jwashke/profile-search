@@ -1,4 +1,31 @@
-<p>
-  main Component!
-</p>
-<button mat-button>Click me!</button>
+<section class="mat-typography">
+  <div class="main-container">
+    <h1>Github Profile Search</h1>
+    <form #profileSearchForm="ngForm" (ngSubmit)="search()">
+      <mat-form-field>
+        <input matInput placeholder="Search for a profile here" [(ngModel)]="searchTerm" name="search">
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="search-button" type="submit">Search</button>
+    </form>
+    <ng-container *ngIf="!showError">
+      <h2 *ngIf="totalCount">Total Count: {{ totalCount }}</h2>
+      <div class="user-profiles">
+        <div *ngFor="let profile of userProfiles" class="user-profile">
+          <img src="{{ profile.avatar_url }}" alt="{{ profile.login }}-avatar">
+          <div class="profile-info">
+            <h3>{{ profile.login }}</h3>
+            <a href="{{ profile.html_url }}" target="_blank">Github Profile</a>
+          </div>
+        </div>
+      </div>
+      <mat-paginator *ngIf="totalCount > 10"
+        [length]="totalCount"
+        [pageSize]="10"
+        (page)="pageEvent($event)">
+      </mat-paginator>
+    </ng-container>
+    <div *ngIf="showError" class="error-info">
+      {{ errorMessage }}
+    </div>
+  </div>
+</section>
